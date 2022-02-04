@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block title %}
+
+<title>Solo Squad - {{user.name}}</title>
+
+{% endblock %}
+
+{% block head %}
+
+{{ super() }}
+
+{% endblock %}
+
+{% block content %}
+
+<center>
+    <br><br>
+    <img src='{{user.avatar_url}}' />
+    <br>{{user.name}}<br>{{user.id}}
+</center>
+
+{% endblock %}

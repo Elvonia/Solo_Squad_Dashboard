@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+    {% block head %}
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    {% block styles %}
+    <!-- Bootstrap CSS -->
+    {{ bootstrap.load_css() }}
+    {% endblock %}
+
+    {% block title %}
+    <title>Solo Squad</title>
+    {% endblock %}
+    {% endblock %}
+</head>
+<body data-background-color="dark">
+    
+    <div class="wrapper">
+
+        {% include "nav.html" %}
+
+        <!-- Page content -->
+        <div class="main-panel">
+
+            {% block content %}{% endblock %}
+            <!-- Footer -->
+
+        </div>
+
+    </div>
+    
+    {% block scripts %}
+    <!-- Optional JavaScript -->
+    {{ bootstrap.load_js() }}
+    {% endblock %}
+
+</body>
+</html>
