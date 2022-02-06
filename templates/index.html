@@ -2,7 +2,7 @@
 
 {% block title %}
 
-<title>Solo Squad - {{user.name}}</title>
+<title>Solo Squad</title>
 
 {% endblock %}
 
@@ -14,10 +14,18 @@
 
 {% block content %}
 
+{% if user %}
 <center>
     <br><br>
     <img src='{{user.avatar_url}}' />
     <br>{{user.name}}<br>{{user.id}}
 </center>
+{% else %}
+<center>
+    <br><br>
+    <img src=''/>
+    <br>Username<br>User ID
+</center>
+{% endif %}
 
 {% endblock %}

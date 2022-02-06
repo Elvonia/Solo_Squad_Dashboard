@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, redirect, url_for, render_template
+from flask import Flask, redirect, url_for, render_template, request
 from flask_discord import DiscordOAuth2Session, requires_authorization, Unauthorized
 from flask_bootstrap import Bootstrap5
 
@@ -19,21 +19,40 @@ app.secret_key = app.config["DISCORD_CLIENT_SECRET"]
 
 discord = DiscordOAuth2Session(app)
 
-# Any reason to call @requires_authorization when discord.fetch_user() triggers login if no user data is present?
+
 @app.route("/")
 def index():
-    return render_template("index.html", user=discord.fetch_user())
+    b = request.args.get("auth")
+    if b == "true":
+        return render_template("index.html", user=discord.fetch_user(), guilds=discord.fetch_guilds())
+    else:
+        return render_template("index.html", user=None, guilds=None)
 
 
 @app.route("/login/")
 def login():
-    return discord.create_session()
+    return discord.create_session(scope={'identify', 'guilds'})
+
+
+@app.route("/logout/")
+def logout():
+    discord.revoke()
+    return redirect(url_for("index"))
 
 
 @app.route("/callback/")
 def callback():
-    discord.callback()
-    return redirect(url_for("index"))
+    code = request.args.get("code")
+    if code != None:
+        discord.callback()
+        return redirect(url_for("index") + "?auth=true")
+    else:
+        return redirect(url_for("index"))
+
+
+@app.route("/test/")
+def test():
+    return render_template("test.html")
 
 
 @app.errorhandler(Unauthorized)
@@ -42,4 +61,4 @@ def redirect_unauthorized(e):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", debug=True)
